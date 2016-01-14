@@ -1,0 +1,35 @@
+﻿can18, bwz2, rss44
+
+
+Readability:
+The heuristic code for both heuristics obscures our understanding as it isn’t commented at all. The code to read the input file also obscures understanding as it has a ton of method calls on one line.
+
+
+Comments in the heuristic code would be helpful to understand what parts of the heuristic are being performed at each point.
+
+
+The line to read the input file and convert it into a data list (Lines 34 and 35) should be its own method, and not chain of method calls on a single line.
+
+
+The code for both heuristics is the same and is repeated in the main method of bins.  Since we don’t want duplicate code, the heuristic code should be separated out into its own method, and for the second heuristic we pass the method sorted data, instead of the unsorted data used in the first heuristic.
+
+
+The code to calculate the total size of the files should not be included in this method as it has nothing to do with actually running the heuristic so we would separate that out into its own method as well.
+
+
+The code for printing the statistics at the end of each heuristic is also duplicated code and can be placed into one method, with the name of the heuristic passed as a parameter.
+
+
+Also in disk the equals function has unneeded if an return statements that could be removed to create a more concise and clear method.
+
+
+Testability:
+
+
+
+
+Extensibility:
+The bins file as quite a bit of duplicated code.  It also has an extremely long main method that encompasses the entire program. It also has message chains to create the scanner object to read the test text files. The disk class also has two constructors that repeat code, which could be refactored to remove duplicate code.
+
+
+To extend this code as written, one would have to add the heuristics to the main method and could not reuse any of the previously written code. Thus it would take more work to add new heuristics to this code than necessary.

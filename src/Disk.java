@@ -92,8 +92,7 @@ public class Disk implements Comparable<Disk> {
             } else {
                 return result;
             }
-        } else {
-            return -1;
         }
+        return -1;
     }
 }
