@@ -23,10 +23,8 @@ public class Disk implements Comparable<Disk> {
      * Create an empty Disk with the given ID.
      */
     public Disk (int id) {
+        this();
         myId = id;
-        mySize = 0;
-        myCapacity = 1000000;
-        myFiles = new ArrayList<Integer>();
     }
 
     /**
