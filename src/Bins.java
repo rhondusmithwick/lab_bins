@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +17,7 @@ public class Bins {
      * @param input tied to an input source that contains space separated numbers
      * @return list of the numbers in the order they were read
      */
-    public List<Integer> readData (Scanner input) {
+    public List<Integer> readData(Scanner input) {
         List<Integer> results = new ArrayList<Integer>();
         while (input.hasNext()) {
             results.add(input.nextInt());
@@ -27,7 +25,7 @@ public class Bins {
         return results;
     }
 
-    public List<Integer> getData () {
+    public List<Integer> getData() {
         InputStream bStream = Bins.class.getClassLoader().getResourceAsStream(DATA_FILE);
         Scanner input = new Scanner(bStream);
         List<Integer> data = readData(input);
@@ -36,18 +34,19 @@ public class Bins {
 
     /**
      * Get the total size of all the files.
+     *
      * @param data a list containing the sizes of each file
      * @return the total size of all the files.
      */
-    public int getTotal (List<Integer> data) {
+    public int getTotal(List<Integer> data) {
         int total = 0;
-        for(Integer size : data) {
-            total+=size;
+        for (Integer size : data) {
+            total += size;
         }
         return total;
     }
 
-    public void worstFit (PriorityQueue<Disk> pq, List<Integer> data) {
+    public void worstFit(PriorityQueue<Disk> pq, List<Integer> data) {
         int diskId = 1;
         for (Integer size : data) {
             Disk d = pq.peek();
@@ -65,9 +64,24 @@ public class Bins {
     }
 
     /**
+     * Do the prints.
+     *
+     * @param type is the type of bin packing to use (worst-fit or worst-fit decreasing)
+     * @param pq   is the Priority Queue containing the Disks.
+     */
+    public void prints(String type, PriorityQueue<Disk> pq) {
+        System.out.println(type);
+        System.out.println("number of pq used: " + pq.size());
+        while (!pq.isEmpty()) {
+            System.out.println(pq.poll());
+        }
+        System.out.println();
+    }
+
+    /**
      * The main program.
      */
-    public static void main (String args[]) {
+    public static void main(String args[]) {
         Bins b = new Bins();
         List<Integer> data = b.getData();
         int total = b.getTotal(data);
@@ -76,27 +90,12 @@ public class Bins {
         pq.add(new Disk(0));
 
         b.worstFit(pq, data);
-
         System.out.println("total size = " + total / 1000000.0 + "GB");
-        System.out.println();
-        System.out.println("worst-fit method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
+        b.prints("worst-fit method", pq);
 
         Collections.sort(data, Collections.reverseOrder());
         pq.add(new Disk(0));
-
-
-
-        System.out.println();
-        System.out.println("worst-fit decreasing method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
+        b.worstFit(pq, data);
+        b.prints("worst-fit decreasing method", pq);
     }
 }
