@@ -71,14 +71,9 @@ public class Disk implements Comparable<Disk> {
     @Override
     public boolean equals (Object other) {
         if (other != null && other instanceof Disk) {
-            if (myId == ((Disk) other).myId) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+            return (myId == ((Disk) other).myId);
         }
+        return false;
     }
 
     /**
