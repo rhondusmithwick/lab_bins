@@ -1,9 +1,13 @@
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Runs a number of algorithms that try to fit files onto disks.
@@ -78,24 +82,26 @@ public class Bins {
         System.out.println();
     }
 
+    public void fitDisksAndPrint(List<Integer> data, Function<List<Integer>, List<Integer>> func) {
+        List<Integer> transformed = func.apply(data);
+        int total = getTotal(transformed);
+        PriorityQueue<Disk> pq = new PriorityQueue<>();
+        pq.add(new Disk(0));
+
+        worstFit(pq, transformed);
+        System.out.println("total size = " + total / 1000000.0 + "GB");
+        prints("worst-fit method", pq);
+    }
+
     /**
      * The main program.
      */
     public static void main(String args[]) {
         Bins b = new Bins();
         List<Integer> data = b.getData();
-        int total = b.getTotal(data);
+        b.fitDisksAndPrint(data, (t -> t.stream().sorted().collect(Collectors.toList())));
+        b.fitDisksAndPrint(data, (t -> t.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList())));
 
-        PriorityQueue<Disk> pq = new PriorityQueue<Disk>();
-        pq.add(new Disk(0));
 
-        b.worstFit(pq, data);
-        System.out.println("total size = " + total / 1000000.0 + "GB");
-        b.prints("worst-fit method", pq);
-
-        Collections.sort(data, Collections.reverseOrder());
-        pq.add(new Disk(0));
-        b.worstFit(pq, data);
-        b.prints("worst-fit decreasing method", pq);
     }
 }
